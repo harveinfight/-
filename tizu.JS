@@ -1,3 +1,5 @@
+import { Activity } from "react";
+
 window.onload = function() {
     // 1. 地図の土台を作る（MapLibreの書き方）
     const map = new maplibregl.Map({
