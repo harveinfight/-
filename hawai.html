@@ -9,34 +9,99 @@
             margin: 0;
             padding: 0;
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f4f9f4; /* 目に優しい薄緑ですわ */
+            
+            /* 👇 ここで背景画像を設定していますわ */
+            background-image: url('cmaranski-beach-123.jpg'); 
+            background-size: cover;          /* 画面全体に隙間なく広げる設定です */
+            background-position: center;     /* 画像の中心を画面の真ん中に合わせます */
+            background-attachment: fixed;    /* スクロールしても背景が動かないようにします */
+            background-repeat: no-repeat;    /* 画像が繰り返されないようにします */
+            
             color: #333;
             text-align: center;
         }
         header {
-            background-color: #627BC1; /* 地図の国と同じ高貴な青ですわ */
+            /* 背景を少し透明な青にして、画像がうっすら透けるオシャレな仕様ですわ */
+            background-color: rgba(44, 169, 228, 0.822); 
             color: white;
             padding: 40px 20px;
         }
         h1 { margin: 0; font-size: 32px; }
+        
+        /* 白い背景の枠（コンテナ）の共通デザインですわ */
         .container {
             max-width: 800px;
-            margin: 30px auto;
-            padding: 20px;
-            background: white;
+            margin: 30px auto; /* 上下に30pxの間隔をあける設定ですわ */
+            padding: 30px 20px;
+            /* 背景の白を少しだけ透明（0.95）にして、後ろの夕日をほんのり感じさせますわ */
+            background: rgba(255, 255, 255, 0.95); 
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            
+            display: flex;
+            flex-direction: column;
+            text-align: left; /* 中のテキストを読みやすく左詰めにしますわ */
         }
+        
+        /* タイトルだけは中央に寄せるお上品な設定ですわ */
+        .container h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+        
         p { font-size: 18px; line-height: 1.6; }
-        .btn-back {
+        
+        /* ボタン全体の共通スタイル */
+        .btn {
             display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #228b22;
-            color: white;
             text-decoration: none;
-            border-radius: 5px;
             font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .btn:hover {
+            transform: translateY(-2px); /* 触れた時に少しだけ上に浮き上がりますわ */
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        /* 緑のナビゲーションボタン群（歴史・ニュース用）の配置 */
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0 10px 0;
+            flex-wrap: wrap;
+        }
+        
+        /* 歴史・ニュースボタンの形 */
+        .btn-green {
+            width: 180px;
+            height: 120px;
+            border-radius: 25px;
+            background-color: #2bb15c;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-green:hover {
+            background-color: #1a6b33;
+        }
+
+        /* 下部の戻るボタン */
+        .btn-back {
+            margin-top: 30px;
+            margin-left: auto;           /* 自動で右側に押し寄せる設定ですわ */
+            margin-right: 10px;          /* 右端にぴったりくっつきすぎないための隙間ですわ */
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #555555;
+            color: white;
+            font-size: 14px;
+        }
+        .btn-back:hover {
+            background-color: #333333;
         }
     </style>
 </head>
@@ -49,10 +114,30 @@
 
     <div class="container">
         <h2>アロハ！ようこそ我が領土へ</h2>
-        <p>ここは、地図上のタップから繋がる特別なポータルサイトですわ。</p>
-        <p>透き通るような青い海と、美味しいパンケーキ、そして完璧な MultiPolygon の座標によって構成された、世界で最も美しい島々でございます。</p>
+        <p style="text-align: center;">ここは、地図上のタップから繋がる特別なポータルサイトですわ。</p>
+        <p style="text-align: center;">透き通るような青い海と、美味しいパンケーキ、速度に優れた完璧な地政学データの元に構成された、世界で最も美しい島々でございます。</p>
         
-        <a href="#" onclick="window.close(); return false;" class="btn-back">地図の閲覧に戻るですわ</a>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+
+        <div class="btn-group">
+            <a href="#history" class="btn btn-green">📜 歴史</a>
+            <a href="#news" class="btn btn-green">📰 ニュース</a>
+        </div>
+    </div>
+
+    <div id="news" class="container">
+        <h2>📰 更新・お知らせ</h2>
+        <p>ハワイ王国の最新ニュースや、新しく追加されたスポットの情報などをここに書き込んでいきますわ。</p>
+        <p>・2026/XX/XX：新しいパンケーキショップのデータを地図に追加いたしましたわ。</p>
+        <p>・2026/XX/XX：王国の公式ポータルサイトを開設いたしました。</p>
+    </div>
+
+    <div id="overview" class="container">
+        <h2>🌍 国の概要</h2>
+        <p>ここでは、我が麗しきハワイ王国の人口や面積、気候などの基本的な情報をまとめてご紹介いたしますわ。</p>
+        <p>豊かな自然と完璧なジオメトリによって守られた、美しき楽園の真の姿がここに記されますの。</p>
+        
+        <a href="#" onclick="window.close(); return false;" class="btn btn-back">地図の閲覧に戻るですわ</a>
     </div>
 
 </body>
