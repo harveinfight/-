@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国旗クイズですわあああぁぁぁ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+            background-color: #f4f6f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .quiz-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .quiz-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .quiz-subtitle {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .flag-box {
+            width: 180px;
+            height: 115px;
+            margin: 0 auto 25px auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .flag-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .btn-option {
+            background-color: #ffffff;
+            color: #2B547E;
+            border: 2px solid #2B547E;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-option:hover:not(:disabled) {
+            background-color: #2B547E;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .btn-option:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .btn-option.correct-choice {
+            background-color: #2e7d32 !important;
+            border-color: #2e7d32 !important;
+            color: white !important;
+        }
+
+        .btn-option.wrong-choice {
+            background-color: #c62828 !important;
+            border-color: #c62828 !important;
+            color: white !important;
+        }
+
+        .result-message {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            min-height: 25px;
+        }
+
+        .correct { color: #2e7d32; }
+        .wrong { color: #c62828; }
+
+        .btn-next {
+            margin-top: 20px;
+            background-color: #2B547E;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            display: none;
+            transition: background 0.2s;
+        }
+
+        .btn-next:hover {
+            background-color: #1e3c5a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-card">
+        <div class="quiz-title">国旗クイズ</div>
+        <div class="quiz-subtitle">この国旗の国名はどれですの？</div>
+        
+        <div class="flag-box">
+            <img id="flag-image" src="" alt="国旗">
+        </div>
+
+        <div class="options-grid" id="options-container"></div>
+
+        <div class="result-message" id="result-text"></div>
+
+        <button class="btn-next" id="next-btn" onclick="generateRandomQuestion()">次の問題へ行きますわ</button>
+    </div>
+
+    <script>
+        // 国リスト（ここにデータを追加・差し替えできます）
+        const countryList = [
+            { id: 1, name: "アンドラ", flagPath: "flags/ad.png" },
+  { id: 2, name: "アラブ首長国連邦", flagPath: "flags/ae.png" },
+  { id: 3, name: "アフガニスタン", flagPath: "flags/af.png" },
+  { id: 4, name: "アンティグア・バーブーダ", flagPath: "flags/ag.png" },
+  { id: 5, name: "アンギラ", flagPath: "flags/ai.png" },
+  { id: 6, name: "アルバニア", flagPath: "flags/al.png" },
+  { id: 7, name: "アルメニア", flagPath: "flags/am.png" },
+  { id: 8, name: "アンゴラ", flagPath: "flags/ao.png" },
+  { id: 9, name: "南極", flagPath: "flags/aq.png" },
+  { id: 10, name: "アルゼンチン", flagPath: "flags/ar.png" },
+  { id: 11, name: "米領サモア", flagPath: "flags/as.png" },
+  { id: 12, name: "オーストリア", flagPath: "flags/at.png" },
+  { id: 13, name: "オーストラリア", flagPath: "flags/au.png" },
+  { id: 14, name: "アルバ", flagPath: "flags/aw.png" },
+  { id: 15, name: "オーランド諸島", flagPath: "flags/ax.png" },
+  { id: 16, name: "アゼルバイジャン", flagPath: "flags/az.png" },
+  { id: 17, name: "ボスニア・ヘルツェゴビナ", flagPath: "flags/ba.png" },
+  { id: 18, name: "バルバドス", flagPath: "flags/bb.png" },
+  { id: 19, name: "バングラデシュ", flagPath: "flags/bd.png" },
+  { id: 20, name: "ベルギー", flagPath: "flags/be.png" },
+  { id: 21, name: "ブルキナファソ", flagPath: "flags/bf.png" },
+  { id: 22, name: "ブルガリア", flagPath: "flags/bg.png" },
+  { id: 23, name: "バーレーン", flagPath: "flags/bh.png" },
+  { id: 24, name: "ブルンジ", flagPath: "flags/bi.png" },
+  { id: 25, name: "ベナン", flagPath: "flags/bj.png" },
+  { id: 26, name: "サン・バルテルミー", flagPath: "flags/bl.png" },
+  { id: 27, name: "バミューダ", flagPath: "flags/bm.png" },
+  { id: 28, name: "ブルネイ", flagPath: "flags/bn.png" },
+  { id: 29, name: "ボリビア", flagPath: "flags/bo.png" },
+  { id: 30, name: "ボネール、シント・ユースタティウスおよびサバ", flagPath: "flags/bq.png" },
+  { id: 31, name: "ブラジル", flagPath: "flags/br.png" },
+  { id: 32, name: "バハマ", flagPath: "flags/bs.png" },
+  { id: 33, name: "ブータン", flagPath: "flags/bt.png" },
+  { id: 34, name: "ブーベ島", flagPath: "flags/bv.png" },
+  { id: 35, name: "ボツワナ", flagPath: "flags/bw.png" },
+  { id: 36, name: "ベラルーシ", flagPath: "flags/by.png" },
+  { id: 37, name: "ベリーズ", flagPath: "flags/bz.png" },
+  { id: 38, name: "カナダ", flagPath: "flags/ca.png" },
+  { id: 39, name: "ココス（キーリング）諸島", flagPath: "flags/cc.png" },
+  { id: 40, name: "コンゴ民主共和国", flagPath: "flags/cd.png" },
+  { id: 41, name: "中央アフリカ共和国", flagPath: "flags/cf.png" },
+  { id: 42, name: "コンゴ共和国", flagPath: "flags/cg.png" },
+  { id: 43, name: "スイス", flagPath: "flags/ch.png" },
+  { id: 44, name: "コートジボワール", flagPath: "flags/ci.png" },
+  { id: 45, name: "クック諸島", flagPath: "flags/ck.png" },
+  { id: 46, name: "チリ", flagPath: "flags/cl.png" },
+  { id: 47, name: "カメルーン", flagPath: "flags/cm.png" },
+  { id: 48, name: "中国", flagPath: "flags/cn.png" },
+  { id: 49, name: "コロンビア", flagPath: "flags/co.png" },
+  { id: 50, name: "コスタリカ", flagPath: "flags/cr.png" },
+  { id: 51, name: "キューバ", flagPath: "flags/cu.png" },
+  { id: 52, name: "カーボベルデ", flagPath: "flags/cv.png" },
+  { id: 53, name: "キュラソー", flagPath: "flags/cw.png" },
+  { id: 54, name: "クリスマス島", flagPath: "flags/cx.png" },
+  { id: 55, name: "キプロス", flagPath: "flags/cy.png" },
+  { id: 56, name: "チェコ", flagPath: "flags/cz.png" },
+  { id: 57, name: "ドイツ", flagPath: "flags/de.png" },
+  { id: 58, name: "ジブチ", flagPath: "flags/dj.png" },
+  { id: 59, name: "デンマーク", flagPath: "flags/dk.png" },
+  { id: 60, name: "ドミニカ国", flagPath: "flags/dm.png" },
+  { id: 61, name: "ドミニカ共和国", flagPath: "flags/do.png" },
+  { id: 62, name: "アルジェリア", flagPath: "flags/dz.png" },
+  { id: 63, name: "エクアドル", flagPath: "flags/ec.png" },
+  { id: 64, name: "エストニア", flagPath: "flags/ee.png" },
+  { id: 65, name: "エジプト", flagPath: "flags/eg.png" },
+  { id: 66, name: "西サハラ", flagPath: "flags/eh.png" },
+  { id: 67, name: "エリトリア", flagPath: "flags/er.png" },
+  { id: 68, name: "スペイン", flagPath: "flags/es.png" },
+  { id: 69, name: "エチオピア", flagPath: "flags/et.png" },
+  { id: 70, name: "フィンランド", flagPath: "flags/fi.png" },
+  { id: 71, name: "フィジー", flagPath: "flags/fj.png" },
+  { id: 72, name: "フォークランド諸島", flagPath: "flags/fk.png" },
+  { id: 73, name: "ミクロネシア連邦", flagPath: "flags/fm.png" },
+  { id: 74, name: "フェロー諸島", flagPath: "flags/fo.png" },
+  { id: 75, name: "フランス", flagPath: "flags/fr.png" },
+  { id: 76, name: "ガボン", flagPath: "flags/ga.png" },
+  { id: 77, name: "イングランド", flagPath: "flags/gb-eng.png" },
+  { id: 78, name: "北アイルランド", flagPath: "flags/gb-nir.png" },
+  { id: 79, name: "スコットランド", flagPath: "flags/gb-sct.png" },
+  { id: 80, name: "ウェールズ", flagPath: "flags/gb-wls.png" },
+  { id: 81, name: "グレナダ", flagPath: "flags/gd.png" },
+  { id: 82, name: "ジョージア", flagPath: "flags/ge.png" },
+  { id: 83, name: "仏領ギアナ", flagPath: "flags/gf.png" },
+  { id: 84, name: "ガーンジー", flagPath: "flags/gg.png" },
+  { id: 85, name: "ガーナ", flagPath: "flags/gh.png" },
+  { id: 86, name: "ジブラルタル", flagPath: "flags/gi.png" },
+  { id: 87, name: "グリーンランド", flagPath: "flags/gl.png" },
+  { id: 88, name: "ガンビア", flagPath: "flags/gm.png" },
+  { id: 89, name: "ギニア", flagPath: "flags/gn.png" },
+  { id: 90, name: "グアドループ", flagPath: "flags/gp.png" },
+  { id: 91, name: "赤道ギニア", flagPath: "flags/gq.png" },
+  { id: 92, name: "ギリシャ", flagPath: "flags/gr.png" },
+  { id: 93, name: "サウスジョージア・サウスサンドウィッチ諸島", flagPath: "flags/gs.png" },
+  { id: 94, name: "グアテマラ", flagPath: "flags/gt.png" },
+  { id: 95, name: "グアム", flagPath: "flags/gu.png" },
+  { id: 96, name: "ギニアビサウ", flagPath: "flags/gw.png" },
+  { id: 97, name: "ガイアナ", flagPath: "flags/gy.png" },
+  { id: 98, name: "香港", flagPath: "flags/hk.png" },
+  { id: 99, name: "ハード島・マクドナルド諸島", flagPath: "flags/hm.png" },
+  { id: 100, name: "ホンジュラス", flagPath: "flags/hn.png" },
+  { id: 101, name: "クロアチア", flagPath: "flags/hr.png" },
+  { id: 102, name: "ハイチ", flagPath: "flags/ht.png" },
+  { id: 103, name: "ハンガリー", flagPath: "flags/hu.png" },
+{ id: 104, name: "インドネシア", flagPath: "flags/id.png" },
+  { id: 105, name: "アイルランド", flagPath: "flags/ie.png" },
+  { id: 106, name: "イスラエル", flagPath: "flags/il.png" },
+  { id: 107, name: "マン島", flagPath: "flags/im.png" },
+  { id: 108, name: "インド", flagPath: "flags/in.png" },
+  { id: 109, name: "イギリス領インド洋地域", flagPath: "flags/io.png" },
+  { id: 110, name: "イラク", flagPath: "flags/iq.png" },
+  { id: 111, name: "イラン", flagPath: "flags/ir.png" },
+  { id: 112, name: "アイスランド", flagPath: "flags/is.png" },
+  { id: 113, name: "イタリア", flagPath: "flags/it.png" },
+  { id: 114, name: "ジャージー", flagPath: "flags/je.png" },
+  { id: 115, name: "ジャマイカ", flagPath: "flags/jm.png" },
+  { id: 116, name: "ヨルダン", flagPath: "flags/jo.png" },
+  { id: 117, name: "日本", flagPath: "flags/jp.png" },
+  { id: 118, name: "ケニア", flagPath: "flags/ke.png" },
+  { id: 119, name: "キルギス", flagPath: "flags/kg.png" },
+  { id: 120, name: "カンボジア", flagPath: "flags/kh.png" },
+  { id: 121, name: "キリバス", flagPath: "flags/ki.png" },
+  { id: 122, name: "コモロ", flagPath: "flags/km.png" },
+  { id: 123, name: "セントクリストファー・ネイビス", flagPath: "flags/kn.png" },
+  { id: 124, name: "北朝鮮", flagPath: "flags/kp.png" },
+  { id: 125, name: "韓国", flagPath: "flags/kr.png" },
+  { id: 126, name: "クウェート", flagPath: "flags/kw.png" },
+  { id: 127, name: "ケイマン諸島", flagPath: "flags/ky.png" },
+  { id: 128, name: "カザフスタン", flagPath: "flags/kz.png" },
+  { id: 129, name: "ラオス", flagPath: "flags/la.png" },
+  { id: 130, name: "レバノン", flagPath: "flags/lb.png" },
+  { id: 131, name: "セントルシア", flagPath: "flags/lc.png" },
+  { id: 132, name: "リヒテンシュタイン", flagPath: "flags/li.png" },
+  { id: 133, name: "スリランカ", flagPath: "flags/lk.png" },
+  { id: 134, name: "リベリア", flagPath: "flags/lr.png" },
+  { id: 135, name: "レソト", flagPath: "flags/ls.png" },
+  { id: 136, name: "リトアニア", flagPath: "flags/lt.png" },
+  { id: 137, name: "ルクセンブルク", flagPath: "flags/lu.png" },
+  { id: 138, name: "ラトビア", flagPath: "flags/lv.png" },
+  { id: 139, name: "リビア", flagPath: "flags/ly.png" },
+  { id: 140, name: "モロッコ", flagPath: "flags/ma.png" },
+  { id: 141, name: "モナコ", flagPath: "flags/mc.png" },
+  { id: 142, name: "モルドバ", flagPath: "flags/md.png" },
+  { id: 143, name: "モンテネグロ", flagPath: "flags/me.png" },
+  { id: 144, name: "サン・マルタン（フランス領）", flagPath: "flags/mf.png" },
+  { id: 145, name: "マダガスカル", flagPath: "flags/mg.png" },
+  { id: 146, name: "マーシャル諸島", flagPath: "flags/mh.png" },
+  { id: 147, name: "北マケドニア", flagPath: "flags/mk.png" },
+  { id: 148, name: "マリ", flagPath: "flags/ml.png" },
+  { id: 149, name: "ミャンマー", flagPath: "flags/mm.png" },
+  { id: 150, name: "モンゴル", flagPath: "flags/mn.png" },
+  { id: 151, name: "マカオ", flagPath: "flags/mo.png" },
+  { id: 152, name: "北マリアナ諸島", flagPath: "flags/mp.png" },
+  { id: 153, name: "マルティニーク", flagPath: "flags/mq.png" },
+  { id: 154, name: "モーリタニア", flagPath: "flags/mr.png" },
+  { id: 155, name: "モントセラト", flagPath: "flags/ms.png" },
+  { id: 156, name: "マルタ", flagPath: "flags/mt.png" },
+  { id: 157, name: "モーリシャス", flagPath: "flags/mu.png" },
+  { id: 158, name: "モルディブ", flagPath: "flags/mv.png" },
+  { id: 159, name: "マラウイ", flagPath: "flags/mw.png" },
+  { id: 160, name: "メキシコ", flagPath: "flags/mx.png" },
+  { id: 161, name: "マレーシア", flagPath: "flags/my.png" },
+  { id: 162, name: "モザンビーク", flagPath: "flags/mz.png" },
+  { id: 163, name: "ナミビア", flagPath: "flags/na.png" },
+  { id: 164, name: "ニューカレドニア", flagPath: "flags/nc.png" },
+  { id: 165, name: "ニジェール", flagPath: "flags/ne.png" },
+  { id: 166, name: "ノーフォーク島", flagPath: "flags/nf.png" },
+  { id: 167, name: "ナイジェリア", flagPath: "flags/ng.png" },
+  { id: 168, name: "ニカラグア", flagPath: "flags/ni.png" },
+  { id: 169, name: "オランダ", flagPath: "flags/nl.png" },
+  { id: 170, name: "ノルウェー", flagPath: "flags/no.png" },
+  { id: 171, name: "ネパール", flagPath: "flags/np.png" },
+  { id: 172, name: "ナウル", flagPath: "flags/nr.png" },
+  { id: 173, name: "ニウエ", flagPath: "flags/nu.png" },
+  { id: 174, name: "ニュージーランド", flagPath: "flags/nz.png" },
+  { id: 175, name: "オマーン", flagPath: "flags/om.png" },
+  { id: 176, name: "パナマ", flagPath: "flags/pa.png" },
+  { id: 177, name: "ペルー", flagPath: "flags/pe.png" },
+  { id: 178, name: "フランス領ポリネシア", flagPath: "flags/pf.png" },
+  { id: 179, name: "パプアニューギニア", flagPath: "flags/pg.png" },
+  { id: 180, name: "フィリピン", flagPath: "flags/ph.png" },
+  { id: 181, name: "パキスタン", flagPath: "flags/pk.png" },
+  { id: 182, name: "ポーランド", flagPath: "flags/pl.png" },
+  { id: 183, name: "サンピエール島・ミクロン島", flagPath: "flags/pm.png" },
+  { id: 184, name: "ピトケアン", flagPath: "flags/pn.png" },
+  { id: 185, name: "プエルトリコ", flagPath: "flags/pr.png" },
+  { id: 186, name: "パレスチナ", flagPath: "flags/ps.png" },
+  { id: 187, name: "ポルトガル", flagPath: "flags/pt.png" },
+  { id: 188, name: "パラオ", flagPath: "flags/pw.png" },
+  { id: 189, name: "パラグアイ", flagPath: "flags/py.png" },
+  { id: 190, name: "カタール", flagPath: "flags/qa.png" },
+  { id: 191, name: "レユニオン", flagPath: "flags/re.png" },
+  { id: 192, name: "ルーマニア", flagPath: "flags/ro.png" },
+  { id: 193, name: "セルビア", flagPath: "flags/rs.png" },
+  { id: 194, name: "ロシア", flagPath: "flags/ru.png" },
+  { id: 195, name: "ルワンダ", flagPath: "flags/rw.png" },
+  { id: 196, name: "サウジアラビア", flagPath: "flags/sa.png" },
+  { id: 197, name: "ソロモン諸島", flagPath: "flags/sb.png" },
+  { id: 198, name: "セーシェル", flagPath: "flags/sc.png" },
+  { id: 199, name: "スーダン", flagPath: "flags/sd.png" },
+  { id: 200, name: "スウェーデン", flagPath: "flags/se.png" },
+  { id: 201, name: "シンガポール", flagPath: "flags/sg.png" },
+  { id: 202, name: "セントヘレナ", flagPath: "flags/sh.png" },
+  { id: 203, name: "スロベニア", flagPath: "flags/si.png" },
+  { id: 204, name: "スヴァールバル諸島およびヤンマイエン島", flagPath: "flags/sj.png" },
+  { id: 205, name: "スロバキア", flagPath: "flags/sk.png" },
+  { id: 206, name: "シエラレオネ", flagPath: "flags/sl.png" },
+  { id: 207, name: "サンマリノ", flagPath: "flags/sm.png" },
+  { id: 208, name: "セネガル", flagPath: "flags/sn.png" },
+  { id: 209, name: "ソマリア", flagPath: "flags/so.png" },
+  { id: 210, name: "スリナム", flagPath: "flags/sr.png" },
+  { id: 211, name: "南スーダン", flagPath: "flags/ss.png" },
+  { id: 212, name: "サントメ・プリンシペ", flagPath: "flags/st.png" },
+  { id: 213, name: "エルサルバドル", flagPath: "flags/sv.png" },
+  { id: 214, name: "シント・マールテン（オランダ領）", flagPath: "flags/sx.png" },
+  { id: 215, name: "シリア", flagPath: "flags/sy.png" },
+  { id: 216, name: "エスワティニ", flagPath: "flags/sz.png" },
+  { id: 217, name: "タークス・カイコス諸島", flagPath: "flags/tc.png" },
+  { id: 218, name: "チャド", flagPath: "flags/td.png" },
+  { id: 219, name: "フランス領南方・南極地域", flagPath: "flags/tf.png" },
+  { id: 220, name: "トーゴ", flagPath: "flags/tg.png" },
+  { id: 221, name: "タイ", flagPath: "flags/th.png" },
+  { id: 222, name: "タジキスタン", flagPath: "flags/tj.png" },
+  { id: 223, name: "トケラウ", flagPath: "flags/tk.png" },
+  { id: 224, name: "東ティモール", flagPath: "flags/tl.png" },
+  { id: 225, name: "トルクメニスタン", flagPath: "flags/tm.png" },
+  { id: 226, name: "チュニジア", flagPath: "flags/tn.png" },
+  { id: 227, name: "トンガ", flagPath: "flags/to.png" },
+  { id: 228, name: "トルコ", flagPath: "flags/tr.png" },
+  { id: 229, name: "トリニダード・トバゴ", flagPath: "flags/tt.png" },
+  { id: 230, name: "ツバル", flagPath: "flags/tv.png" },
+  { id: 231, name: "台湾", flagPath: "flags/tw.png" },
+  { id: 232, name: "タンザニア", flagPath: "flags/tz.png" },
+  { id: 233, name: "ウクライナ", flagPath: "flags/ua.png" },
+  { id: 234, name: "ウガンダ", flagPath: "flags/ug.png" },
+  { id: 235, name: "合衆国領有小離島", flagPath: "flags/um.png" },
+  { id: 236, name: "アメリカ合衆国", flagPath: "flags/us.png" },
+  { id: 237, name: "ウルグアイ", flagPath: "flags/uy.png" },
+  { id: 238, name: "ウズベキスタン", flagPath: "flags/uz.png" },
+  { id: 239, name: "バチカン市国", flagPath: "flags/va.png" },
+  { id: 240, name: "セントビンセントおよびグレナディーン諸島", flagPath: "flags/vc.png" },
+  { id: 241, name: "ベネズエラ", flagPath: "flags/ve.png" },
+  { id: 242, name: "英領ヴァージン諸島", flagPath: "flags/vg.png" },
+  { id: 243, name: "米領ヴァージン諸島", flagPath: "flags/vi.png" },
+  { id: 244, name: "ベトナム", flagPath: "flags/vn.png" },
+  { id: 245, name: "バヌアツ", flagPath: "flags/vu.png" },
+  { id: 246, name: "ウォリス・フツナ", flagPath: "flags/wf.png" },
+  { id: 247, name: "サモア", flagPath: "flags/ws.png" },
+  { id: 248, name: "コソボ", flagPath: "flags/xk.png" },
+  { id: 249, name: "イエメン", flagPath: "flags/ye.png" },
+  { id: 250, name: "マヨット", flagPath: "flags/yt.png" },
+  { id: 251, name: "南アフリカ", flagPath: "flags/za.png" },
+  { id: 252, name: "ザンビア", flagPath: "flags/zm.png" },
+  { id: 253, name: "ジンバブエ", flagPath: "flags/zw.png" }
+        ];
+        
+        
+      
+        let currentCorrectCountry = null;
+
+        // ランダムシャッフル関数
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // 問題生成関数
+        function generateRandomQuestion() {
+            if (!countryList || countryList.length === 0) return;
+
+            // リセット処理
+            document.getElementById('result-text').innerText = '';
+            document.getElementById('result-text').className = 'result-message';
+            document.getElementById('next-btn').style.display = 'none';
+
+            // 1. 正解の国を確定
+            const targetIndex = Math.floor(Math.random() * countryList.length);
+            currentCorrectCountry = countryList[targetIndex];
+
+            // 2. 国旗画像の反映
+            const imagePath = currentCorrectCountry.flagPath || currentCorrectCountry.flag || "";
+            document.getElementById('flag-image').src = imagePath;
+
+            // 3. 不正解（ダミー）の選択肢を3つ取得
+            const wrongOptions = [];
+            let safetyCounter = 0;
+
+            while (wrongOptions.length < 3 && safetyCounter < 1000) {
+                safetyCounter++;
+                const randIndex = Math.floor(Math.random() * countryList.length);
+                const candidate = countryList[randIndex];
+                
+                if (candidate && candidate.id !== currentCorrectCountry.id) {
+                    const isAlreadyPicked = wrongOptions.some(item => item.id === candidate.id);
+                    if (!isAlreadyPicked) {
+                        wrongOptions.push(candidate);
+                    }
+                }
+            }
+
+            // 4. 選択肢配列の作成
+            const correctName = currentCorrectCountry.name || currentCorrectCountry.countryName || "不明";
+            let choices = [
+                { name: correctName, isCorrect: true }
+            ];
+
+            wrongOptions.forEach(country => {
+                const wrongName = country.name || country.countryName || "";
+                if (wrongName) {
+                    choices.push({ name: wrongName, isCorrect: false });
+                }
+            });
+
+            // シャッフル
+            choices = shuffleArray(choices);
+
+            // 5. ボタン生成
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            choices.forEach(choice => {
+                const button = document.createElement('button');
+                button.className = 'btn-option';
+                button.innerText = choice.name;
+                button.onclick = () => checkAnswer(button, choice.isCorrect);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        // 判定関数
+        function checkAnswer(clickedButton, isCorrect) {
+            const resultText = document.getElementById('result-text');
+            const allButtons = document.querySelectorAll('.btn-option');
+
+            allButtons.forEach(btn => btn.disabled = true);
+
+            const correctName = currentCorrectCountry.name || currentCorrectCountry.countryName || "";
+
+            if (isCorrect) {
+                clickedButton.classList.add('correct-choice');
+                resultText.innerText = "正解ですわ！お見事です！🎉";
+                resultText.classList.add('correct');
+            } else {
+                clickedButton.classList.add('wrong-choice');
+                resultText.innerText = `残念！正解は「${correctName}」ですわ！`;
+                resultText.classList.add('wrong');
+
+                allButtons.forEach(btn => {
+                    if (btn.innerText === correctName) {
+                        btn.classList.add('correct-choice');
+                    }
+                });
+            }
+
+            document.getElementById('next-btn').style.display = 'block';
+        }
+
+        // 初回スタート
+        generateRandomQuestion();
+    </script>
+    <style>
+    .portal-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        margin: 50px 0;
+    }
+    .portal-card {
+        background: #fdfdfd;
+        border: 1px solid #e0eee0;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        text-decoration: none;
+        color: #333;
+    }
+    /* マウスを乗せるとふんわり浮き上がりますの */
+    .portal-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.07);
+        border-color: #228b22;
+    }
+    .portal-card h3 {
+        margin: 0 0 0 px 0;
+        color: #228b22;
+        font-size: 18px;
+    }
+    .portal-card p {
+        font-size: 13px;
+        margin: 0;
+        color: #666;
+        flex-direction: column;
+    }
+    </style>
+        
+        <div class="portal-grid">
+            <a href="portal.html" class="portal-card">
+                <h3>🏠ポータルサイトに戻る</h3>
+               
+            </a>
+            
+        </div>
+    </div>
+
+</body>
+</html>
