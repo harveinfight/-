@@ -2,42 +2,90 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>アロハ！ハワイのページ</title>
+    <title>王国の秘伝パンケーキの歴史 - 麗しきハワイ王国</title>
     <style>
-        /* 全体設定（背景色はシンプルな白にしておきますわ） */
+        /* 全体スタイル（ポータルサイトとお揃いですわ） */
         body {
             margin: 0;
             padding: 0;
             font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-color: #ffffff;
+            background-image: url("images/cmaranski-beach-123.jpg"); 
+            background-size: cover;
+            background-position: center;
+       
+           
             color: #333;
         }
-
-        /* 水色のヘッダー */
+        
         header {
-            background-color: #2ca9e4;
+            background-color: rgba(44, 169, 228, 0.822); 
             color: white;
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
-        header h1 {
-            margin: 0;
-            font-size: 32px;
-            letter-spacing: 2px;
+        header h1 { margin: 0; font-size: 30px; }
+        
+        /* ポータルへ戻る上部リンク */
+        .top-nav {
+            text-align: left;
+            max-width: 800px;
+            margin: 10px auto -10px auto;
+            padding: 0 20px;
+        }
+        .top-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            background: rgba(0,0,0,0.3);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 14px;
         }
 
-        /* ----------------------------------
-           1枚目のエリア（ビーチ画像を背景に指定）
-        ---------------------------------- */
-        .section-first-wrapper {
-            /* 👇 ここで1枚目のエリアだけにビーチ画像を設定しております */
-            background-image: url('images/cmaranski-beach-123.jpg'); 
+        /* 記事のメインコンテナ */
+        .article-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.95); 
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* スクロールエリア全体 */
+        .scroll-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+
+
+        .section {
+            height: 100vh;
+            scroll-snap-align: start;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+
+
+
+        /* 1枚目のエリア（ビーチ画像を背景に指定） */
+       
+            .section-first-wrapper {
+            background-image: url('images/cmaranski-beach-123.jpg');
             background-size: cover;
             background-position: center;
-            padding: 40px 0 60px 0;
+   
+         /* 変更: ヘッダーの高さ分（約77px）上にパディングを追加してコンテンツが隠れるのを防ぐ */
+         padding: 120px 0 77px 0;
         }
+
+
+
 
         /* ページ幅を揃える共通コンテナ */
         .container {
@@ -46,6 +94,9 @@
             padding: 0 15px;
         }
 
+
+
+
         /* 1枚目エリアの2カラムレイアウト */
         .section-top {
             display: flex;
@@ -53,14 +104,21 @@
             position: relative;
         }
 
+
+
+
         /* 左側：サイドバー（お知らせ・ピックアップ） */
         .sidebar {
+            padding-left: 0px;
             width: 280px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 50px;
             flex-shrink: 0;
         }
+
+
+
 
         .side-box {
             background: rgba(255, 255, 255, 0.95);
@@ -68,6 +126,9 @@
             padding: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
+
+
+
 
         .side-title {
             font-size: 20px;
@@ -77,6 +138,9 @@
             margin-top: 0;
             margin-bottom: 15px;
         }
+
+
+
 
         .news-list {
             list-style: none;
@@ -95,6 +159,9 @@
             margin-right: 5px;
         }
 
+
+
+
         .pickup-list {
             list-style: none;
             padding: 0;
@@ -112,6 +179,9 @@
             text-decoration: underline;
         }
 
+
+
+
         /* 右側：メインコンテンツ（ハワイ州の基本情報） */
         .main-content {
             flex-grow: 1;
@@ -122,11 +192,17 @@
             position: relative;
         }
 
+
+
+
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 220px;
             gap: 20px;
         }
+
+
+
 
         .state-title {
             font-size: 32px;
@@ -139,6 +215,9 @@
             margin-top: 0;
             margin-bottom: 15px;
         }
+
+
+
 
         .info-group {
             margin-bottom: 20px;
@@ -157,6 +236,9 @@
             margin: 3px 0 12px 10px;
         }
 
+
+
+
         /* 右側の画像・マップ枠 */
         .media-box {
             background: #ccc;
@@ -174,6 +256,9 @@
         .box-map {
             height: 180px;
         }
+
+
+
 
         /* グラフ枠の配置 */
         .graphs-wrapper {
@@ -195,6 +280,9 @@
             display: block;
         }
 
+
+
+
         .wiki-link {
             text-align: right;
             margin-top: 20px;
@@ -203,6 +291,9 @@
         .wiki-link a {
             color: #0066cc;
         }
+
+
+
 
         /* 下への矢印ボタン */
         .scroll-down-btn {
@@ -227,6 +318,9 @@
             transform: translateX(-50%) translateY(3px);
         }
 
+
+
+
         /* ----------------------------------
            2枚目のエリア（歴史：背景画像なしの白背景）
         ---------------------------------- */
@@ -235,10 +329,16 @@
             padding: 50px 0 80px 0;
         }
 
+
+
+
         .section-history {
             background: #ffffff;
             position: relative;
         }
+
+
+
 
         .history-header {
             display: flex;
@@ -258,6 +358,9 @@
             color: #555;
         }
 
+
+
+
         .history-section-title {
             font-size: 24px;
             font-weight: bold;
@@ -275,11 +378,17 @@
             border-radius: 2px;
         }
 
+
+
+
         .history-body {
             font-size: 18px;
             line-height: 1.8;
             margin-left: 27px;
         }
+
+
+
 
         /* 右下の「地図の閲覧に戻るですわ」ボタン */
         .btn-back {
@@ -304,16 +413,26 @@
 </head>
 <body>
 
+
+
+
     <!-- 水色ヘッダー -->
+     <!-- 🌺 ボタンが綺麗に納まるように調整した固定ヘッダー 🌺 -->
     <header>
+        <div class="top-nav">
+            <a href="index.html">🏠 ポータルへ戻る</a>
+        </div>
         <h1>アロハ！ ハワイのページ</h1>
     </header>
+
+
+
 
     <!-- 1枚目のエリア（写真背景のエリア） -->
     <div class="section-first-wrapper">
         <div class="container">
             <div class="section-top">
-                
+               
                 <!-- 左サイドバー -->
                 <div class="sidebar">
                     <!-- お知らせ枠 -->
@@ -324,6 +443,9 @@
                             <li><span class="news-date">2026.10.1</span>▶ ホームページさくせい</li>
                         </ul>
                     </div>
+
+
+
 
                     <!-- ピックアップ枠 -->
                     <div class="side-box">
@@ -336,34 +458,52 @@
                     </div>
                 </div>
 
+
+
+
                 <!-- 右メインコンテンツ -->
                 <div class="main-content">
                     <div class="main-grid">
-                        
+                       
                         <!-- 左列：テキスト情報 -->
                         <div>
                             <div class="state-title">ハワイ州</div>
                             <p style="margin-top: 0; color: #555;">アメリカの1つの州……</p>
+
+
+
 
                             <div class="info-group">
                                 <span class="info-label">州都</span>
                                 <div class="info-value">ホノルル</div>
                             </div>
 
+
+
+
                             <div class="info-group">
                                 <span class="info-label">面積</span>
                                 <div class="info-value">28,311 km² （全米43位）</div>
                             </div>
+
+
+
 
                             <div class="info-group">
                                 <span class="info-label">公用語・主な言語</span>
                                 <div class="info-value">ハワイ語、英語</div>
                             </div>
 
+
+
+
                             <div class="info-group">
                                 <span class="info-label">宗教・一番多い宗教</span>
                                 <div class="info-value">キリスト教</div>
                             </div>
+
+
+
 
                             <!-- グラフ領域 -->
                             <div class="graphs-wrapper">
@@ -378,52 +518,90 @@
                             </div>
                         </div>
 
+
+
+
                         <!-- 右列：国旗・マップ画像スペース -->
                         <div>
                             <div class="media-box box-flag">こっき</div>
                             <div class="media-box box-map">位置 MAP</div>
                         </div>
 
+
+
+
                     </div>
+
+
+
 
                     <div class="wiki-link">
                         詳しくは → <a href="https://ja.wikipedia.org/wiki/%E3%83%8F%E3%83%AF%E3%82%A4%E5%B7%9E" target="_blank">https://wikipedia.org</a>
                     </div>
 
+
+
+
                     <!-- 下への案内矢印 -->
                     <a href="#history" class="scroll-down-btn">▼</a>
                 </div>
+
+
+
 
             </div>
         </div>
     </div>
 
+
+
+
     <!-- 2枚目のエリア（白背景の歴史エリア） -->
     <div id="history" class="section-history-wrapper">
         <div class="container">
             <div class="section-history">
-                
+               
                 <div class="history-header">
                     <h1 class="history-title">歴史</h1>
                     <div class="history-date">最終変更日：2026.9.6</div>
                 </div>
 
+
+
+
                 <div class="history-section-title">
                     1. ハワイ島誕生
                 </div>
+
+
+
 
                 <div class="history-body">
                     <p>ここにハワイ諸島の形成や火山活動、最初のポリネシア人航海者たちの到着といった、歴史の物語が紡がれますわ。</p>
                     <p>太平洋の真ん中に浮かぶ美しき島々は、数百万年もの歳月をかけてプレートの移動とともに誕生いたしましたの。</p>
                 </div>
 
+
+
+
                 <!-- 右下に配置された「戻る」ボタン -->
                 <a href="#" onclick="window.close(); return false;" class="btn-back">地図の閲覧に戻るですわ</a>
                 <div style="clear: both;"></div>
+
+
+
 
             </div>
         </div>
     </div>
 
+
+
+
 </body>
 </html>
+
+
+
+
+
