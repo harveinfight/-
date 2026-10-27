@@ -2,606 +2,423 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>王国の秘伝パンケーキの歴史 - 麗しきハワイ王国</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アロハ！ ハワイのページ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 全体スタイル（ポータルサイトとお揃いですわ） */
+        @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap');
+
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            background-image: url("images/cmaranski-beach-123.jpg"); 
-            background-size: cover;
-            background-position: center;
-       
-           
-            color: #333;
-        }
-        
-        header {
-            background-color: rgba(44, 169, 228, 0.822); 
-            color: white;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-        header h1 { margin: 0; font-size: 30px; }
-        
-        /* ポータルへ戻る上部リンク */
-        .top-nav {
-            text-align: left;
-            max-width: 800px;
-            margin: 10px auto -10px auto;
-            padding: 0 20px;
-        }
-        .top-nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            background: rgba(0,0,0,0.3);
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-size: 14px;
+            font-family: 'Zen Maru Gothic', sans-serif, system-ui;
         }
 
-        /* 記事のメインコンテナ */
-        .article-container {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 40px 30px;
-            background: rgba(255, 255, 255, 0.95); 
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
+        /* Custom scrollbar for better visual look */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        /* スクロールエリア全体 */
-        .scroll-container {
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
         }
-
-
-        .section {
-            height: 100vh;
-            scroll-snap-align: start;
-            position: relative;
-            box-sizing: border-box;
-        }
-
-
-
-
-        /* 1枚目のエリア（ビーチ画像を背景に指定） */
-       
-            .section-first-wrapper {
-            background-image: url('images/cmaranski-beach-123.jpg');
-            background-size: cover;
-            background-position: center;
-   
-         /* 変更: ヘッダーの高さ分（約77px）上にパディングを追加してコンテンツが隠れるのを防ぐ */
-         padding: 120px 0 77px 0;
-        }
-
-
-
-
-        /* ページ幅を揃える共通コンテナ */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-
-
-
-        /* 1枚目エリアの2カラムレイアウト */
-        .section-top {
-            display: flex;
-            gap: 20px;
-            position: relative;
-        }
-
-
-
-
-        /* 左側：サイドバー（お知らせ・ピックアップ） */
-        .sidebar {
-            padding-left: 0px;
-            width: 280px;
-            display: flex;
-            flex-direction: column;
-            gap: 50px;
-            flex-shrink: 0;
-        }
-
-
-
-
-        .side-box {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-
-
-
-        .side-title {
-            font-size: 20px;
-            font-weight: bold;
-            border-bottom: 2px solid #333;
-            padding-bottom: 5px;
-            margin-top: 0;
-            margin-bottom: 15px;
-        }
-
-
-
-
-        .news-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            font-size: 14px;
-        }
-        .news-list li {
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-        .news-date {
-            color: #666;
-            font-weight: bold;
-            display: inline-block;
-            margin-right: 5px;
-        }
-
-
-
-
-        .pickup-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .pickup-list li {
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        .pickup-list a {
-            color: #2ca9e4;
-            text-decoration: none;
-        }
-        .pickup-list a:hover {
-            text-decoration: underline;
-        }
-
-
-
-
-        /* 右側：メインコンテンツ（ハワイ州の基本情報） */
-        .main-content {
-            flex-grow: 1;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            position: relative;
-        }
-
-
-
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 220px;
-            gap: 20px;
-        }
-
-
-
-
-        .state-title {
-            font-size: 32px;
-            font-weight: bold;
-            background: #aaa;
-            color: white;
-            padding: 5px 15px;
-            display: inline-block;
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.5);
             border-radius: 4px;
-            margin-top: 0;
-            margin-bottom: 15px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.8);
         }
 
-
-
-
-        .info-group {
-            margin-bottom: 20px;
-        }
-        .info-label {
-            font-weight: bold;
-            background: #ddd;
-            padding: 2px 8px;
-            display: inline-block;
-            border-radius: 3px;
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-        .info-value {
-            font-size: 18px;
-            margin: 3px 0 12px 10px;
+        /* Background image mimicking the reference screenshot */
+        .bg-hawaii {
+            background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
-
-
-
-        /* 右側の画像・マップ枠 */
-        .media-box {
-            background: #ccc;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #555;
-            margin-bottom: 15px;
-        }
-        .box-flag {
-            height: 100px;
-        }
-        .box-map {
-            height: 180px;
+        .header-bg {
+            background-color: #3aa8df;
         }
 
-
-
-
-        /* グラフ枠の配置 */
-        .graphs-wrapper {
-            display: flex;
-            gap: 15px;
-            margin-top: 10px;
-        }
-        .graph-box {
-            border: 2px solid #333;
-            border-radius: 12px;
-            padding: 10px 15px;
-            text-align: center;
-            font-weight: bold;
-            min-width: 90px;
-        }
-        .graph-tag {
-            font-size: 11px;
-            color: #666;
-            display: block;
-        }
-
-
-
-
-        .wiki-link {
-            text-align: right;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-        .wiki-link a {
-            color: #0066cc;
-        }
-
-
-
-
-        /* 下への矢印ボタン */
-        .scroll-down-btn {
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 40px;
-            background-color: #2ca9e4;
+        .badge-gray {
+            background-color: #a0a5aa;
             color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            font-size: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
-        }
-        .scroll-down-btn:hover {
-            transform: translateX(-50%) translateY(3px);
         }
 
-
-
-
-        /* ----------------------------------
-           2枚目のエリア（歴史：背景画像なしの白背景）
-        ---------------------------------- */
-        .section-history-wrapper {
-            background-color: #ffffff; /* 背景はすっきりとした白色ですわ */
-            padding: 50px 0 80px 0;
-        }
-
-
-
-
-        .section-history {
-            background: #ffffff;
-            position: relative;
-        }
-
-
-
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            border-bottom: 2px solid #333;
-            padding-bottom: 10px;
-            margin-bottom: 30px;
-        }
-        .history-title {
-            font-size: 36px;
-            font-weight: bold;
-            margin: 0;
-        }
-        .history-date {
-            font-size: 14px;
-            color: #555;
-        }
-
-
-
-
-        .history-section-title {
-            font-size: 24px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .history-section-title::before {
-            content: '';
-            display: inline-block;
-            width: 12px;
-            height: 32px;
-            background-color: #aaa;
-            border-radius: 2px;
-        }
-
-
-
-
-        .history-body {
-            font-size: 18px;
-            line-height: 1.8;
-            margin-left: 27px;
-        }
-
-
-
-
-        /* 右下の「地図の閲覧に戻るですわ」ボタン */
-        .btn-back {
-            display: inline-block;
-            margin-top: 40px;
-            float: right;
-            padding: 10px 20px;
-            border-radius: 5px;
-            background-color: #555555;
-            color: white;
-            font-size: 14px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        .btn-back:hover {
-            background-color: #333333;
-            transform: translateY(-2px);
+        .box-placeholder {
+            background-color: #cccccc;
+            color: #4a4a4a;
         }
     </style>
 </head>
-<body>
+<body class="bg-hawaii min-h-screen flex flex-col justify-between select-none">
 
+    <header class="header-bg text-white shadow-md sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between relative">
+            <!-- Left Portal Button -->
+            <button onclick="showToast('ポータル画面へ戻ります')" class="bg-gray-600 hover:bg-gray-700 text-white text-xs sm:text-sm font-bold py-1.5 px-3 sm:px-4 rounded-full flex items-center gap-1.5 shadow transition transform active:scale-95">
+                <span>🏠</span>
+                <span>ポータルへ戻る</span>
+            </button>
 
+            <!-- Center Title -->
+            <h1 class="text-lg sm:text-2xl font-bold text-center absolute left-1/2 -translate-x-1/2 pointer-events-none tracking-wide">
+                アロハ！ ハワイのページ
+            </h1>
 
-
-    <!-- 水色ヘッダー -->
-     <!-- 🌺 ボタンが綺麗に納まるように調整した固定ヘッダー 🌺 -->
-    <header>
-        <div class="top-nav">
-            <a href="index.html">🏠 ポータルへ戻る</a>
+            <div class="w-10 sm:w-20"></div> <!-- Spacer for layout balance -->
         </div>
-        <h1>アロハ！ ハワイのページ</h1>
     </header>
 
+    <main class="flex-grow w-full mx-auto px-2 sm:px-4 lg:px-6 py-4 flex items-center justify-center">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 w-full max-w-[1500px] items-start">
+            
+            <div class="lg:col-span-4 xl:col-span-3 flex flex-col gap-6">
+                
+                <!-- Notice Card (お知らせ) -->
+                <div class="bg-white/95 backdrop-blur-sm rounded-xl p-5 shadow-lg border border-white/50 hover:shadow-xl transition">
+                    <h2 class="text-xl font-bold text-gray-800 pb-2 border-b-2 border-gray-300 flex items-center gap-2">
+                        お知らせ
+                    </h2>
+                    <ul class="mt-4 space-y-3 text-sm text-gray-700">
+                        <li class="flex items-center gap-2">
+                            <span class="font-mono text-gray-600 font-semibold">2026.9.6</span>
+                            <span class="text-sky-600 font-bold">▶</span>
+                            <span>情報へんこう</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="font-mono text-gray-600 font-semibold">2026.10.1</span>
+                            <span class="text-sky-600 font-bold">▶</span>
+                            <span>ホームページさくせい</span>
+                        </li>
+                    </ul>
+                </div>
 
-
-
-    <!-- 1枚目のエリア（写真背景のエリア） -->
-    <div class="section-first-wrapper">
-        <div class="container">
-            <div class="section-top">
-               
-                <!-- 左サイドバー -->
-                <div class="sidebar">
-                    <!-- お知らせ枠 -->
-                    <div class="side-box">
-                        <h2 class="side-title">お知らせ</h2>
-                        <ul class="news-list">
-                            <li><span class="news-date">2026.9.6</span>▶ 情報へんこう</li>
-                            <li><span class="news-date">2026.10.1</span>▶ ホームページさくせい</li>
-                        </ul>
-                    </div>
-
-
-
-
-                    <!-- ピックアップ枠 -->
-                    <div class="side-box">
-                        <h2 class="side-title">ピックアップ</h2>
-                        <p style="font-size: 12px; color: #666; margin-top:-10px;">おすすめ</p>
-                        <ul class="pickup-list">
-                            <li><a href="#">ハワイの観光</a></li>
-                            <li><a href="#">日本とのかんけい</a></li>
+                <!-- Featured Articles Card (話題の記事) -->
+                <div class="bg-white/95 backdrop-blur-sm rounded-xl p-5 shadow-lg border border-white/50 hover:shadow-xl transition">
+                    <h2 class="text-xl font-bold text-gray-800 pb-2 border-b-2 border-gray-300">
+                        話題の記事
+                    </h2>
+                    <div class="mt-3">
+                        <span class="text-xs text-orange-600 font-bold block mb-2">おすすめ</span>
+                        <ul class="space-y-2 text-sm">
+                            <li>
+                                <a href="#" onclick="showArticleModal('ハワイの観光状況', 'ハワイは世界有数のリゾート地であり、年間を通じて多くの観光客が訪れます。美しいビーチや豊かな自然環境、特有の文化が大きな魅力です。')" class="text-sky-600 hover:text-sky-800 font-medium hover:underline flex items-center gap-1">
+                                    ハワイの観光状況
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" onclick="showArticleModal('日本とのかんけい', 'ハワイと日本は歴史的に非常に強い繋がりを持っています。19世紀後半からの日系移民の歴史や、多くの日本人が観光で訪れるなど、文化・経済の両面で深いつながりがあります。')" class="text-sky-600 hover:text-sky-800 font-medium hover:underline flex items-center gap-1">
+                                    日本とのかんけい
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
 
+            </div>
 
+            <div class="lg:col-span-8 xl:col-span-9 bg-white/95 backdrop-blur-sm rounded-xl p-6 sm:p-8 shadow-xl border border-white/50 relative flex flex-col justify-between min-h-[480px]">
+                <div>
+                    <!-- Title Badge & Short Intro -->
+                    <div class="mb-6">
+                        <div class="inline-block bg-gray-500 text-white text-2xl font-bold px-6 py-1.5 rounded-md shadow-sm">
+                            ハワイ州
+                        </div>
+                        <p class="mt-3 text-gray-700 text-sm sm:text-base font-medium">
+                            アメリカの1つの州……
+                        </p>
+                    </div>
 
-
-                <!-- 右メインコンテンツ -->
-                <div class="main-content">
-                    <div class="main-grid">
-                       
-                        <!-- 左列：テキスト情報 -->
-                        <div>
-                            <div class="state-title">ハワイ州</div>
-                            <p style="margin-top: 0; color: #555;">アメリカの1つの州……</p>
-
-
-
-
-                            <div class="info-group">
-                                <span class="info-label">州都</span>
-                                <div class="info-value">ホノルル</div>
+                    <!-- Details and Image Layout Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                        
+                        <!-- Details List -->
+                        <div class="md:col-span-7 space-y-4">
+                            <!-- 州都 -->
+                            <div>
+                                <span class="badge-gray px-3 py-0.5 rounded text-xs font-bold inline-block mb-1">州都</span>
+                                <p class="text-gray-800 font-semibold pl-1 text-base sm:text-lg">ホノルル</p>
                             </div>
 
-
-
-
-                            <div class="info-group">
-                                <span class="info-label">面積</span>
-                                <div class="info-value">28,311 km² （全米43位）</div>
+                            <!-- 面積 -->
+                            <div>
+                                <span class="badge-gray px-3 py-0.5 rounded text-xs font-bold inline-block mb-1">面積</span>
+                                <p class="text-gray-800 font-semibold pl-1 text-base sm:text-lg">28,311 km² （全米43位）</p>
                             </div>
 
-
-
-
-                            <div class="info-group">
-                                <span class="info-label">公用語・主な言語</span>
-                                <div class="info-value">ハワイ語、英語</div>
+                            <!-- 公用語・主な言語 -->
+                            <div>
+                                <span class="badge-gray px-3 py-0.5 rounded text-xs font-bold inline-block mb-1">公用語・主な言語</span>
+                                <p class="text-gray-800 font-semibold pl-1 text-base sm:text-lg">ハワイ語、英語</p>
                             </div>
 
-
-
-
-                            <div class="info-group">
-                                <span class="info-label">宗教・一番多い宗教</span>
-                                <div class="info-value">キリスト教</div>
+                            <!-- 宗教・一番多い宗教 -->
+                            <div>
+                                <span class="badge-gray px-3 py-0.5 rounded text-xs font-bold inline-block mb-1">宗教・一番多い宗教</span>
+                                <p class="text-gray-800 font-semibold pl-1 text-base sm:text-lg">キリスト教</p>
                             </div>
+                        </div>
 
-
-
-
-                            <!-- グラフ領域 -->
-                            <div class="graphs-wrapper">
-                                <div class="graph-box">
-                                    <span class="graph-tag">こうようご</span>
-                                    グラフ
+                        <!-- Right Box Placeholders (国旗・位置MAP) -->
+                        <div class="md:col-span-5 flex flex-col gap-4">
+                            <!-- 国旗 Box -->
+                            <div class="relative group cursor-pointer overflow-hidden rounded-lg shadow" onclick="toggleFlagView()">
+                                <div id="flagPlaceholder" class="box-placeholder h-28 sm:h-32 rounded-lg flex items-center justify-center font-bold text-xl sm:text-2xl transition hover:bg-gray-400">
+                                    こっき
                                 </div>
-                                <div class="graph-box">
-                                    <span class="graph-tag">しゅうきょう</span>
-                                    グラフ
+                                <img id="flagImage" src="https://upload.wikimedia.org/wikipedia/commons/e/ef/Flag_of_Hawaii.svg" alt="ハワイ州旗" class="hidden h-28 sm:h-32 w-full object-cover rounded-lg border border-gray-300">
+                            </div>
+
+                            <!-- 位置 MAP Box -->
+                            <div class="relative group cursor-pointer overflow-hidden rounded-lg shadow" onclick="toggleMapView()">
+                                <div id="mapPlaceholder" class="box-placeholder h-36 sm:h-40 rounded-lg flex items-center justify-center font-bold text-xl sm:text-2xl transition hover:bg-gray-400">
+                                    位置 MAP
+                                </div>
+                                <div id="mapContainer" class="hidden h-36 sm:h-40 rounded-lg border border-gray-300 overflow-hidden relative">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725807.575510619!2d-158.2045152208107!3d20.301389033333334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x77f5783082a178bb%3A0x8cf213455110531c!2sHawaii%2C%20USA!5e0!3m2!1sen!2sjp!4v1710000000000!5m2!1sen!2sjp" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                                 </div>
                             </div>
                         </div>
 
-
-
-
-                        <!-- 右列：国旗・マップ画像スペース -->
-                        <div>
-                            <div class="media-box box-flag">こっき</div>
-                            <div class="media-box box-map">位置 MAP</div>
-                        </div>
-
-
-
-
                     </div>
-
-
-
-
-                    <div class="wiki-link">
-                        詳しくは → <a href="https://ja.wikipedia.org/wiki/%E3%83%8F%E3%83%AF%E3%82%A4%E5%B7%9E" target="_blank">https://wikipedia.org</a>
-                    </div>
-
-
-
-
-                    <!-- 下への案内矢印 -->
-                    <a href="#history" class="scroll-down-btn">▼</a>
                 </div>
 
+                <!-- Bottom Action Row inside main card -->
+                <div class="mt-8 pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4 pb-4">
+                    <!-- Graph Buttons -->
+                    <div class="flex items-center gap-3">
+                        <button onclick="openModal('languageModal')" class="border-2 border-gray-800 hover:bg-gray-800 hover:text-white font-bold text-sm px-4 py-2 rounded-xl transition duration-200 active:scale-95 shadow-sm">
+                            こうようご グラフ
+                        </button>
+                        <button onclick="openModal('religionModal')" class="border-2 border-gray-800 hover:bg-gray-800 hover:text-white font-bold text-sm px-4 py-2 rounded-xl transition duration-200 active:scale-95 shadow-sm">
+                            しゅうきょう グラフ
+                        </button>
+                    </div>
+
+                    <!-- Wikipedia External Link -->
+                    <div class="text-xs sm:text-sm text-gray-600">
+                        詳しくは → <a href="https://ja.wikipedia.org/wiki/%E3%83%8F%E3%83%AF%E3%82%A4%E5%B7%9E" target="_blank" rel="noopener noreferrer" class="text-sky-600 hover:underline font-medium">https://wikipedia.org</a>
+                    </div>
+                </div>
+
+                <!-- Bottom Center Down Arrow Button -->
+                <div class="absolute -bottom-5 left-0 right-0 flex justify-center pointer-events-none">
+                    <button onclick="scrollToBottom()" class="pointer-events-auto bg-sky-500 hover:bg-sky-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition transform hover:scale-110 active:scale-95">
+                        <span class="text-xs font-bold">▼</span>
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="py-4 text-center text-white/80 text-xs drop-shadow">
+        © 2026 ハワイ情報ポータル All Rights Reserved.
+    </footer>
 
 
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-16 left-1/2 -translate-x-1/2 bg-gray-900/90 text-white px-6 py-2.5 rounded-full text-sm font-medium shadow-2xl opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-2">
+        <i class="fa-solid fa-circle-info text-sky-400"></i>
+        <span id="toastMsg">通知メッセージ</span>
+    </div>
 
+    <!-- Article Modal -->
+    <div id="articleModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200">
+            <h3 id="articleTitle" class="text-xl font-bold text-gray-800 border-b pb-2 mb-3">記事タイトル</h3>
+            <p id="articleContent" class="text-gray-600 text-sm leading-relaxed mb-6">記事の内容がここに入ります。</p>
+            <div class="text-right">
+                <button onclick="closeModal('articleModal')" class="bg-sky-500 hover:bg-sky-600 text-white font-bold px-5 py-2 rounded-xl text-sm transition">閉じる</button>
             </div>
         </div>
     </div>
 
-
-
-
-    <!-- 2枚目のエリア（白背景の歴史エリア） -->
-    <div id="history" class="section-history-wrapper">
-        <div class="container">
-            <div class="section-history">
-               
-                <div class="history-header">
-                    <h1 class="history-title">歴史</h1>
-                    <div class="history-date">最終変更日：2026.9.6</div>
+    <!-- Language Graph Modal -->
+    <div id="languageModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="text-xl font-bold text-gray-800">言語の使用割合 (こうようご グラフ)</h3>
+                <button onclick="closeModal('languageModal')" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
+            </div>
+            <!-- Simple CSS / SVG Visual Graph -->
+            <div class="space-y-4 my-6">
+                <div>
+                    <div class="flex justify-between text-sm font-bold mb-1">
+                        <span>英語 (English)</span>
+                        <span>74%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden">
+                        <div class="bg-sky-500 h-full rounded-full" style="width: 74%"></div>
+                    </div>
                 </div>
-
-
-
-
-                <div class="history-section-title">
-                    1. ハワイ島誕生
+                <div>
+                    <div class="flex justify-between text-sm font-bold mb-1">
+                        <span>アジア・太平洋諸島言語（ハワイ語含む）</span>
+                        <span>19%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden">
+                        <div class="bg-emerald-500 h-full rounded-full" style="width: 19%"></div>
+                    </div>
                 </div>
-
-
-
-
-                <div class="history-body">
-                    <p>ここにハワイ諸島の形成や火山活動、最初のポリネシア人航海者たちの到着といった、歴史の物語が紡がれますわ。</p>
-                    <p>太平洋の真ん中に浮かぶ美しき島々は、数百万年もの歳月をかけてプレートの移動とともに誕生いたしましたの。</p>
+                <div>
+                    <div class="flex justify-between text-sm font-bold mb-1">
+                        <span>スペイン語</span>
+                        <span>2%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden">
+                        <div class="bg-amber-500 h-full rounded-full" style="width: 2%"></div>
+                    </div>
                 </div>
-
-
-
-
-                <!-- 右下に配置された「戻る」ボタン -->
-                <a href="#" onclick="window.close(); return false;" class="btn-back">地図の閲覧に戻るですわ</a>
-                <div style="clear: both;"></div>
-
-
-
-
+                <div>
+                    <div class="flex justify-between text-sm font-bold mb-1">
+                        <span>その他</span>
+                        <span>5%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden">
+                        <div class="bg-purple-500 h-full rounded-full" style="width: 5%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right">
+                <button onclick="closeModal('languageModal')" class="bg-gray-800 hover:bg-gray-900 text-white font-bold px-5 py-2 rounded-xl text-sm transition">閉じる</button>
             </div>
         </div>
     </div>
 
+    <!-- Religion Graph Modal -->
+    <div id="religionModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="text-xl font-bold text-gray-800">宗教の割合 (しゅうきょう グラフ)</h3>
+                <button onclick="closeModal('religionModal')" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
+            </div>
+            <!-- Simple CSS / SVG Visual Graph -->
+            <div class="space-y-4 my-6">
+                <div>
+                    <div class="flex justify-between text-sm font-bold mb-1">
+                        <span>キリスト教</span>
+                        <span>63%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden">
+                        <div class="bg-blue-600 h-full rounded-full" style="width: 63%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm font-bold mb-1">
+                        <span>無宗教・その他</span>
+                        <span>26%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden">
+                        <div class="bg-slate-400 h-full rounded-full" style="width: 26%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm font-bold mb-1">
+                        <span>仏教</span>
+                        <span>9%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden">
+                        <div class="bg-amber-600 h-full rounded-full" style="width: 9%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-sm font-bold mb-1">
+                        <span>その他東洋宗教・民族宗教</span>
+                        <span>2%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden">
+                        <div class="bg-rose-500 h-full rounded-full" style="width: 2%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-right">
+                <button onclick="closeModal('religionModal')" class="bg-gray-800 hover:bg-gray-900 text-white font-bold px-5 py-2 rounded-xl text-sm transition">閉じる</button>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        // Modal Handlers
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-95');
+            modal.querySelector('div').classList.add('scale-100');
+        }
 
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.querySelector('div').classList.remove('scale-100');
+            modal.querySelector('div').classList.add('scale-95');
+        }
 
+        function showArticleModal(title, content) {
+            document.getElementById('articleTitle').innerText = title;
+            document.getElementById('articleContent').innerText = content;
+            openModal('articleModal');
+        }
+
+        // Toast Notification Handler
+        let toastTimeout;
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = message;
+            
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+
+        // Flag Box Toggle (Placeholder <-> Image)
+        function toggleFlagView() {
+            const placeholder = document.getElementById('flagPlaceholder');
+            const img = document.getElementById('flagImage');
+            
+            if (placeholder.classList.contains('hidden')) {
+                placeholder.classList.remove('hidden');
+                img.classList.add('hidden');
+                showToast('こっき（プレースホルダー）を表示しました');
+            } else {
+                placeholder.classList.add('hidden');
+                img.classList.remove('hidden');
+                showToast('ハワイ州旗を表示しました');
+            }
+        }
+
+        // Map Box Toggle (Placeholder <-> Interactive Google Map)
+        function toggleMapView() {
+            const placeholder = document.getElementById('mapPlaceholder');
+            const container = document.getElementById('mapContainer');
+            
+            if (placeholder.classList.contains('hidden')) {
+                placeholder.classList.remove('hidden');
+                container.classList.add('hidden');
+                showToast('位置 MAP（プレースホルダー）を表示しました');
+            } else {
+                placeholder.classList.add('hidden');
+                container.classList.remove('hidden');
+                showToast('位置 MAP（インタラクティブ地図）を表示しました');
+            }
+        }
+
+        // Scroll helper function
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+            showToast('ページ最下部へ移動しました');
+        }
+    </script>
 </body>
 </html>
-
-
-
-
-

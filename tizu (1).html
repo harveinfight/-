@@ -6,14 +6,183 @@
     <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@4.1.0/dist/maplibre-gl.css' />
     <script src='https://unpkg.com/maplibre-gl@4.1.0/dist/maplibre-gl.js'></script>
     <style>
-        #map { width: 100%; height: 600px; border: 1px solid #ccc; }
-        body { margin: 0; padding: 20px; font-family: sans-serif; }
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: sans-serif;
+        }
+
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* ヘッダー全体 */
+        .header-bar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            gap: 15px;
+            overflow: hidden;
+        }
+
+        .map-title {
+            font-weight: bold;
+            font-size: 1.3rem;
+            white-space: nowrap;
+            color: #333;
+        }
+
+        /* 電光掲示板の表示エリア */
+        .ticker-wrap {
+            flex-grow: 1;
+            overflow: hidden;
+            position: relative;
+            height: 32px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* トラック部分：幅を固定せず左右アニメーションを確実に適用 */
+        .ticker-track {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            white-space: nowrap;
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            animation: scrollRight 70s linear infinite;
+        }
+
+        .flag-item {
+            display: inline-flex;
+            align-items: center;
+            height: 28px;
+            flex-shrink: 0;
+        }
+
+        .flag-item img {
+            height: 100%;
+            width: auto;
+            min-width: 35px; /* 画像読み込み前でも崩れないよう最小幅を指定 */
+            border-radius: 3px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            background-color: #eee;
+        }
+
+        /* 左から右へ流すキーフレーム */
+        @keyframes scrollRight {
+            0% {
+                transform: translateX(-50%);
+            }
+            100% {
+                transform: translateX(0%);
+            }
+        }
     </style>
 </head>
 <body>
 
-    <h1>黒キャス（世界地図）</h1>
+    <div class="header-bar">
+        <div class="map-title">MAP</div>
+        <div class="ticker-wrap">
+            <div class="ticker-track" id="tickerTrack"></div>
+        </div>
+    </div>
+
     <div id="map"></div>
+
+    <script>
+        const countryCodes = [
+            'ad', 'ae', 'af', 'ag', 'ai', 'al', 'am', 'ao', 'aq', 'ar',
+            'as', 'at', 'au', 'aw', 'ax', 'az', 'ba', 'bb', 'bd', 'be',
+            'bf', 'bg', 'bh', 'bi', 'bj', 'bm', 'bn', 'bo', 'bq', 'br',
+            'bs', 'bt', 'bv', 'bw', 'by', 'bz', 'ca', 'cc', 'cd', 'cf',
+            'cg', 'ch', 'ci', 'ck', 'cl', 'cm', 'cn', 'co', 'cr', 'cu',
+            'cv', 'cw', 'cx', 'cy', 'cz', 'de', 'dj', 'dk', 'dm', 'do',
+            'dz', 'ec', 'ee', 'es', 'et', 'fi', 'fj', 'fk', 'fm', 'fo',
+            'fr', 'ga', 'gb-eng', 'gb-nir', 'gb-sct', 'gb-wls', 'gb', 
+            'gd', 'ge', 'gf', 'gg', 'gh', 'gi', 'gl', 'gm', 'gn', 'gp',
+            'gq', 'gr', 'gs', 'gt', 'gu', 'gw', 'gy', 'hk', 'hm', 'hn',
+
+        ];
+
+        function shuffle(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function createFlagElements(codes) {
+            const fragment = document.createDocumentFragment();
+            codes.forEach(code => {
+                const div = document.createElement('div');
+                div.className = 'flag-item';
+                
+                const img = document.createElement('img');
+                
+                // 1. まずローカルの ./flags/ フォルダの画像を試す
+                img.src = `./flags/${code}.png`;
+                img.alt = code;
+                
+                // 2. もしローカル画像の読み込みに失敗したら自動でWeb上の国旗画像(CDN)に切り替える（保険）
+                img.onerror = function() {
+                    this.onerror = null; // 無限ループ防止
+                    this.src = `https://flagcdn.com/w80/${code}.png`;
+                };
+                
+                div.appendChild(img);
+                fragment.appendChild(div);
+            });
+            return fragment;
+        }
+
+        function initTicker() {
+            const track = document.getElementById('tickerTrack');
+            const randomCountries = shuffle(countryCodes);
+            
+            // 途切れなく流すために同じリストを2つ追加
+            track.appendChild(createFlagElements(randomCountries));
+            track.appendChild(createFlagElements(randomCountries));
+        }
+
+        // DOM構築完了時に即実行
+        document.addEventListener('DOMContentLoaded', function() {
+            initTicker();
+
+            const map = new maplibregl.Map({
+                container: 'map',
+                style: {
+                    "version": 8,
+                    "sources": {},
+                    "glyphs": "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
+                    "layers": []
+                },
+                center: [138, 38],
+                zoom: 2,
+                renderWorldCopies: true
+            });
+        });
+    </script>
+</body>
+</html>
 
     <script>
         window.onload = function() {
@@ -325,3 +494,4 @@
     </script>
 </body>
 </html>
+
