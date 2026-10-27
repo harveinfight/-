@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>世界地図なんだよ</title>
+    <link rel='stylesheet' href='https://unpkg.com/maplibre-gl@4.1.0/dist/maplibre-gl.css' />
+    <script src='https://unpkg.com/maplibre-gl@4.1.0/dist/maplibre-gl.js'></script>
+    <style>
+        #map { width: 100%; height: 600px; border: 1px solid #ccc; }
+        body { margin: 0; padding: 20px; font-family: sans-serif; }
+
+        /* 💬 クエスト風吹き出しのスタイル */
+        .quest-marker {
+            cursor: pointer;
+        }
+
+        .quest-bubble {
+            background: #ffffff;
+            border: 3px solid #2B547E;
+            border-radius: 12px;
+            padding: 6px 12px;
+            font-weight: bold;
+            font-size: 13px;
+            color: #2B547E;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+            position: relative;
+            animation: bounce 1.5s infinite alternate; /* ぴょこぴょこ跳ねるアニメーション */
+        }
+
+        /* 吹き出し下の三角 */
+        .quest-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -9px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 9px 7px 0;
+            border-style: solid;
+            border-color: #2B547E transparent;
+            display: block;
+            width: 0;
+        }
+
+        /* 跳ねるアニメーション定義 */
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-8px); }
+        }
+
+        /* ポータルカードのスタイル */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin: 50px 0;
+        }
+        .portal-card {
+            background: #fdfdfd;
+            border: 1px solid #e0eee0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            text-decoration: none;
+            color: #333;
+        }
+        .portal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.07);
+            border-color: #228b22;
+        }
+        .portal-card h3 {
+            margin: 0;
+            color: #228b22;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>白キャス（異世界地図）</h1>
+    <div id="map"></div>
+
+    <script>
+        window.onload = function() {
+            const map = new maplibregl.Map({
+                container: 'map',
+                style: {
+                    "version": 8,
+                    "sources": {},
+                    "glyphs": "https://fonts.openmaptiles.org/{fontstack}/{range}.pbf",
+                    "layers": []
+                },
+                center: [-155.5, 20.5], // ヴチナ島（ハワイ周辺）が見える位置に初期表示を調整
+                zoom: 5,
+                renderWorldCopies: true
+            });
+
+            map.on('load', function() {
+                const sampleData = {
+                    "type": "FeatureCollection",
+                    "features": [
+                        {"type":"Feature","id":"vutina","properties":{"name":"ヴチナ島","url":"vutina.html","description":"水神の島"},"geometry":{"type":"MultiPolygon","coordinates":[[[[-155.736,19.124],[-155.6748,19.136],[-155.5956,19.1462],[-155.5058,19.1553],[-155.4071,19.1681],[-155.2995,19.1841],[-155.1834,19.2027],[-155.0597,19.2233],[-154.9288,19.2453],[-154.7911,19.268],[-154.6482,19.2906],[-154.5015,19.3122],[-154.3524,19.332],[-154.2026,19.3491],[-154.0538,19.3627],[-153.908,19.3718],[-153.8241,19.3421],[-153.4777,19.3728],[-153.1373,19.4062],[-152.8029,19.4417],[-152.4754,19.4788],[-152.1554,19.5169],[-151.8431,19.5553],[-151.5391,19.5937],[-151.2437,19.6315],[-150.9573,19.6683],[-150.6802,19.7034],[-150.4128,19.7366],[-150.1552,19.7674],[-149.9074,19.7952],[-149.6698,19.8197],[-149.4423,19.8406],[-147.3946,19.8564],[-147.7925,19.9505],[-148.1966,20.0455],[-148.607,20.1407],[-149.0234,20.2355],[-149.2054,20.378],[-149.7255,21.0791],[-149.8733,21.1709],[-149.9818,21.2715],[-150.0133,21.3141],[-150.3061,22.0102],[-150.1698,22.0962],[-151.5693,21.7634],[-151.7893,21.3412],[-151.9693,21.14],[-152.6789,20.8976],[],[-152.9853,21.0123],[-153.1344,21.213],[-153.4402,22.4326],[],[-158.8797,22.198],[-158.7694,21.9672],[-158.6472,21.7427],[-158.5138,21.5252],[-158.3696,21.3153],[-158.2152,21.1135],[-158.0513,20.9204],[-157.878,20.7365],[-157.6957,20.5622],[-157.505,20.398],[-157.3065,20.2444],[-155.736,19.124]]]]}}
+                    //                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                    ]
+                    
+                };
+
+                map.addSource('world-data', {
+                    'type': 'geojson',
+                    'data': sampleData
+                });
+
+                // ①ベースの国レイヤー
+                map.addLayer({
+                    'id': 'country-fills',
+                    'type': 'fill',
+                    'source': 'world-data',
+                    'paint': {
+                        'fill-color': '#627BC1',
+                        'fill-opacity': 0.5
+                    }
+                });
+
+                // ②ハイライト専用レイヤー
+                map.addLayer({
+                    'id': 'country-highlight',
+                    'type': 'fill',
+                    'source': 'world-data',
+                    'paint': {
+                        'fill-color': '#2B547E',
+                        'fill-opacity': 0.8
+                    },
+                    'filter': ['==', ['get', 'name'], '']
+                });
+
+                // 国の名前ラベル
+                map.addLayer({
+                    'id': 'country-labels',
+                    'type': 'symbol',
+                    'source': 'world-data',
+                    'layout': {
+                        'text-field': ['get', 'name'],
+                        'text-size': 12,
+                        'text-font': ['Noto Sans Regular', 'Open Sans Regular']
+                    },
+                    'paint': {
+                        'text-color': '#0ff0ff',
+                        'text-halo-color': '#fffaff',
+                        'text-halo-width': 2
+                    }
+                });
+
+                // --------------------------------------------------
+                // 💬 ニュースクエスト用マーカーの設置処理
+                // --------------------------------------------------
+                const newsQuests = [
+                    {
+                        label: "💬 ニュース発生！",
+                        lngLat: [-155.736,21.524], 
+                        title: "ヴチナ島の守り神[ガンド]が降臨日。",
+                        desc: "海が静かな満月の日。丑三つ時に降臨するらしいのですわ！",
+                        url: "https://example.com/gummar empire.html"
+                    },
+                    
+                ];
+
+                newsQuests.forEach(quest => {
+    // 1. 吹き出し用のHTML要素を作成
+    const el = document.createElement('div');
+    el.className = 'quest-marker';
+    el.innerHTML = `<div class="quest-bubble">${quest.label}</div>`;
+
+    // 2. 吹き出しをクリックした時の処理（★ここを修正いたしましたわ！）
+    el.addEventListener('click', (e) => {
+        // 🛑 クリックが下の「国」まで突き抜けるのを完全に阻止いたします！
+        e.stopPropagation();
+        isCountryClicked = true; // 国のハイライトが消えるのを防ぐフラグ
+
+        // 既存のポップアップを全て閉じてから新しいのを開きますの
+        new maplibregl.Popup({ offset: 25 })
+            .setLngLat(quest.lngLat)
+            .setHTML(`
+                <div style="font-family: sans-serif; padding: 5px; min-width: 160px;">
+                    <h4 style="margin: 0 0 5px 0; color: #2B547E;">${quest.title}</h4>
+                    <p style="margin: 0 0 8px 0; font-size: 12px; color: #555;">${quest.desc}</p>
+                    <a href="${quest.url}" target="_blank" style="display: block; text-align: center; background: #2B547E; color: white; padding: 5px; text-decoration: none; font-size: 11px; border-radius: 4px; font-weight: bold;">記事を開く ➔</a>
+                </div>
+            `)
+            .addTo(map);
+    });
+
+    // 3. MapLibreのMarkerとして追加（※setPopupは使わずに上記で直接制御いたします）
+    new maplibregl.Marker({ element: el })
+        .setLngLat(quest.lngLat)
+        .addTo(map);
+});
+                // --------------------------------------------------
+
+                let isCountryClicked = false;
+
+                // 【国がタップされた時】
+                map.on('click', 'country-fills', function(e) {
+                    isCountryClicked = true;
+
+                    const feature = e.features[0];
+                    const countryName = feature.properties.name || "";
+
+                    map.setFilter('country-highlight', ['==', ['get', 'name'], countryName]);
+
+                    const props = feature.properties || {};
+                    const countryUrl = props.url || "#";
+                    const countryDesc = props.description || "貴方の麗しき領土ですわ！";
+                    
+                    new maplibregl.Popup()
+                        .setLngLat(e.lngLat)
+                        .setHTML(`
+                            <div style="font-family: sans-serif; padding: 5px; min-width: 160px; text-align: left;">
+                                <h3 style="margin: 0 0 5px 0; color: #2B547E; border-bottom: 1px solid #ccc; padding-bottom: 3px;">${countryName}</h3>
+                                <p style="margin: 0 0 10px 0; font-size: 12px; color: #444; line-height: 1.4;">${countryDesc}</p>
+                                <a href="${countryUrl}" target="_blank" style="display: block; text-align: center; background: #2B547E; color: white; padding: 6px; text-decoration: none; font-size: 11px; border-radius: 3px; font-weight: bold;">公式サイトへ行くですわ</a>
+                            </div>
+                        `)
+                        .addTo(map);
+                });
+
+                // 【それ以外の場所（海など）がタップされた時】
+                map.on('click', function() {
+                    if (!isCountryClicked) {
+                        map.setFilter('country-highlight', ['==', ['get', 'name'], '']);
+                    }
+                    isCountryClicked = false;
+                });
+
+                // カーソル変更
+                map.on('mouseenter', 'country-fills', function() {
+                    map.getCanvas().style.cursor = 'pointer';
+                });
+                map.on('mouseleave', 'country-fills', function() {
+                    map.getCanvas().style.cursor = '';
+                });
+
+            });
+        };
+    </script>
+
+    <div class="portal-grid">
+        <a href="portal.html" class="portal-card">
+            <h3>🏠ポータルサイトに戻る</h3>
+        </a>
+    </div>
+</body>
+</html>
