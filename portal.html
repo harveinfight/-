@@ -5,6 +5,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>portal</title>
     <link rel="stylesheet" href="style.css">
 
@@ -12,27 +13,25 @@
     @keyframes fadeInUp {
         0% {
             opacity: 0; /* 開始時は透明 */
-            transform: translate(-50%, 160%); /* 開始時は少し下の位置 */
+            transform: translate(-50%, 20%); /* 開始時は少し下の位置 */
         }
         100% {
             opacity: 1; /* 最終的には100%表示 */
-            transform: translate(-50%, -20%); /* 本来のど真ん中の位置に戻る */
+            transform: translate(-50%, -50%); /* 本来のど真ん中の位置に戻る */
         }
     }
 
-    /* お上品な見た目（ドレス）を整えるCSSですわ */
     body {
         margin: 0;
         padding: 0;
-        /* 読み込んだ丸ゴシックフォントを全体に適用しますわ！ */
         font-family: 'M PLUS Rounded 1c', 'Helvetica Neue', Arial, sans-serif;
-        background-color: #f4f9f4; /* 目に優しい薄緑ですわ */
+        background-color: #f4f9f4;
         color: #333;
         text-align: center;
     }
 
     header {
-        background-color: #627BC1; /* 地図の国と同じ高貴な青ですわ */
+        background-color: #627BC1;
         color: white;
     }
 
@@ -40,18 +39,18 @@
 
     /* メインコンテンツを囲む枠 */
     .container {
-        max-width: 850px; /* カードが綺麗に並ぶよう少し広げましたの */
-        margin: 30px auto;
+        max-width: 850px;
+        margin: 50px auto; /* 画面いっぱいの画像との間に少しゆとりを持たせました */
         padding: 30px 20px;
         background: white;
         border-radius: 12px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        text-align: left; /* 中身の文章やリストを見やすくするために左寄せにいたします */
+        text-align: left;
     }
 
     p { font-size: 16px; line-height: 1.6; }
 
-    /* 🔍 ポータルっぽい検索バーのスタイルですわ */
+    /* 検索バーのスタイル */
     .search-box {
         display: flex;
         justify-content: center;
@@ -81,7 +80,7 @@
         background-color: #4e629b;
     }
 
-    /* 🗂️ カテゴリ別のカードリンクですわ */
+    /* カテゴリ別のカードリンク */
     .portal-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -98,7 +97,6 @@
         text-decoration: none;
         color: #333;
     }
-    /* マウスを乗せるとふんわり浮き上がりますの */
     .portal-card:hover {
         transform: translateY(-4px);
         box-shadow: 0 6px 15px rgba(0,0,0,0.07);
@@ -115,7 +113,7 @@
         color: #666;
     }
 
-    /* 📢 お知らせセクションですわ */
+    /* お知らせセクション */
     .info-section {
         margin-top: 40px;
         padding-top: 25px;
@@ -144,7 +142,7 @@
         min-width: 90px;
     }
 
-    /* ボタン（2つ重複していたので1つにまとめ、お上品に整えましたわ） */
+    /* ボタン */
     .btn-back {
         display: inline-block;
         padding: 12px 30px;
@@ -163,37 +161,40 @@
         margin-top: 30px;
     }
 
-    /* 画像ラッパー */
+    /* ★ 画像ラッパー（画面いっぱいに広げる変更部分） ★ */
     .image-wrapper {
         position: relative;
         display: block; 
-        max-width: 100%;
+        width: 100%;
+        height: 100vh; /* ブラウザ画面の高さ100%いっぱいに広げます */
         overflow: hidden;
     }
 
     .image-wrapper img {
         width: 100%;
-        height: auto;
+        height: 100%; /* 親要素（100vh）いっぱいに高さを合わせます */
         display: block;
-        max-height: 400px; /* 縦に長くなりすぎないように制限をかけましたわ */
-        object-fit: cover; /* 画像の比率を保ったまま綺麗に切り抜きます */
+        object-fit: cover; /* 比率を保ったまま画面全体に綺麗にフィットさせます */
     }
 
+    /* ★ 画像の上の文字（「地図（仮）」） ★ */
     .overlay-text {
         position: absolute;
-        top: 20%;
+        top: 50%; /* 画面のど真ん中（縦方向）に配置 */
         left: 50%;
         transform: translate(-50%, -50%);
-        color: rgb(55, 105, 154); /* RGB表記のカンマ漏れを修正いたしました */
-        font-size: clamp(32px, 8vw, 94px); /* スマホ画面でもはみ出さない魔法のフォントサイズですわ */
+        color: rgb(55, 105, 154);
+        text-shadow: 0 2px 15px rgba(255, 255, 255, 0.7); /* 宇宙背景でも文字が読みやすいよう光彩を追加 */
+        font-size: clamp(36px, 9vw, 100px);
         font-weight: bold;
         margin: 0; 
         font-family: 'M PLUS Rounded 1c', fantasy;
         opacity: 0; 
         animation: fadeInUp 1.5s ease-out forwards; 
+        white-space: nowrap; /* 文字が途中で改行されないようにします */
     }
 
-    /* 👣 フッターを最下部に追加いたしました */
+    /* フッター */
     footer {
         margin-top: 50px;
         padding: 20px;

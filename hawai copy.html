@@ -52,9 +52,9 @@
         }
     </style>
 </head>
-<body class="bg-hawaii min-h-screen flex flex-col justify-between select-none">
+<body class="bg-hawaii min-h-screen flex flex-col justify-between select-none pb-12">
 
-    <!-- ヘッダー -->
+    <!-- 1. ヘッダー -->
     <header class="header-bg text-white shadow-md sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between relative">
             <button onclick="showToast('ポータル画面へ戻ります')" class="bg-gray-600 hover:bg-gray-700 text-white text-xs sm:text-sm font-bold py-1.5 px-3 sm:px-4 rounded-full flex items-center gap-1.5 shadow transition transform active:scale-95">
@@ -70,7 +70,7 @@
         </div>
     </header>
 
-    <!-- メインコンテンツ -->
+    <!-- 2. メインコンテンツ -->
     <main class="flex-grow w-full mx-auto px-2 sm:px-4 lg:px-6 py-4 flex items-center justify-center">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 w-full max-w-[1500px] items-start">
             
@@ -134,36 +134,41 @@
                     <!-- 基本情報 ＆ 国旗・地図 -->
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
                         
-                        <!-- ★ 詳細テキストリスト（2列レイアウトに変更＆「人口」を追加） ★ -->
+                        <!-- 詳細テキストリスト -->
                         <div class="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <!-- 州都 -->
                             <div>
                                 <span class="badge-gray px-3 py-0.5 rounded text-xs font-bold inline-block mb-1">州都</span>
                                 <p class="text-gray-800 font-semibold pl-1 text-base sm:text-lg">ホノルル</p>
                             </div>
 
-                            <!-- 新しく追加した「人口」の項目 -->
                             <div>
                                 <span class="badge-gray px-3 py-0.5 rounded text-xs font-bold inline-block mb-1">人口</span>
                                 <p class="text-gray-800 font-semibold pl-1 text-base sm:text-lg">1,455,271人（全米40位）</p>
                             </div>
 
-                            <!-- 面積 -->
                             <div>
                                 <span class="badge-gray px-3 py-0.5 rounded text-xs font-bold inline-block mb-1">面積</span>
                                 <p class="text-gray-800 font-semibold pl-1 text-base sm:text-lg">28,311 km² （全米43位）</p>
                             </div>
 
-                            <!-- 公用語・主な言語 -->
                             <div>
                                 <span class="badge-gray px-3 py-0.5 rounded text-xs font-bold inline-block mb-1">公用語・主な言語</span>
                                 <p class="text-gray-800 font-semibold pl-1 text-base sm:text-lg">ハワイ語、英語</p>
                             </div>
 
-                            <!-- 宗教・一番多い宗教 -->
-                            <div class="sm:col-span-2">
+                            <div>
                                 <span class="badge-gray px-3 py-0.5 rounded text-xs font-bold inline-block mb-1">宗教・一番多い宗教</span>
                                 <p class="text-gray-800 font-semibold pl-1 text-base sm:text-lg">キリスト教</p>
+                            </div>
+
+                            <div>
+                                <span class="badge-gray px-3 py-0.5 rounded text-xs font-bold inline-block mb-1">代表的な食べ物</span>
+                                <p class="text-gray-800 font-semibold pl-1 text-base sm:text-lg">ロコモコ、ポケ、マラサダ</p>
+                            </div>
+
+                            <div>
+                                <span class="badge-gray px-3 py-0.5 rounded text-xs font-bold inline-block mb-1">伝統衣装</span>
+                                <p class="text-gray-800 font-semibold pl-1 text-base sm:text-lg">アロハシャツ、ムームー</p>
                             </div>
                         </div>
 
@@ -194,10 +199,10 @@
                 <!-- 下部アクションエリア -->
                 <div class="mt-8 pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4 pb-4">
                     <div class="flex items-center gap-3">
-                        <button onclick="openModal('languageModal')" class="border-2 border-gray-800 hover:bg-gray-800 hover:text-white font-bold text-sm px-4 py-2 rounded-xl transition duration-200 active:scale-95 shadow-sm">
+                        <button onclick="openModal('languageModal')" class="border-2 border-gray-800 hover:bg-gray-800 hover:text-white text-gray-800 font-bold text-sm px-4 py-2 rounded-xl transition duration-200 active:scale-95 shadow-sm">
                             こうようご グラフ
                         </button>
-                        <button onclick="openModal('religionModal')" class="border-2 border-gray-800 hover:bg-gray-800 hover:text-white font-bold text-sm px-4 py-2 rounded-xl transition duration-200 active:scale-95 shadow-sm">
+                        <button onclick="openModal('religionModal')" class="border-2 border-gray-800 hover:bg-gray-800 hover:text-white text-gray-800 font-bold text-sm px-4 py-2 rounded-xl transition duration-200 active:scale-95 shadow-sm">
                             しゅうきょう グラフ
                         </button>
                     </div>
@@ -207,30 +212,32 @@
                     </div>
                 </div>
 
-                <!-- ページ最下部移動ボタン -->
-                <div class="absolute -bottom-5 left-0 right-0 flex justify-center pointer-events-none">
-                    <button onclick="scrollToBottom()" class="pointer-events-auto bg-sky-500 hover:bg-sky-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition transform hover:scale-110 active:scale-95">
-                        <span class="text-xs font-bold">▼</span>
-                    </button>
-                </div>
+            </div> <!-- メイン情報エリアの閉じタグ -->
 
-            </div>
-
-        </div>
+        </div> <!-- グリッド全体の閉じタグ -->
     </main>
 
-    <footer class="py-4 text-center text-white/80 text-xs drop-shadow">
+    <!-- ページ最下部移動ボタン -->
+    <div class="w-full flex justify-center mb-2">
+        <button onclick="scrollToBottom()" class="bg-sky-500 hover:bg-sky-600 text-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition transform hover:scale-110 active:scale-95">
+            <span class="text-xs font-bold">▼</span>
+        </button>
+    </div>
+
+    <!-- 3. フッター -->
+    <footer class="fixed bottom-0 left-0 right-0 py-3 text-center text-white/90 text-xs drop-shadow z-30 pointer-events-none">
         © 2026 ハワイ情報ポータル All Rights Reserved.
     </footer>
 
-    <!-- モーダル・トースト群 -->
+    <!-- 4. モーダル・トースト群（必ず独立して配置） -->
     <div id="toast" class="fixed top-16 left-1/2 -translate-x-1/2 bg-gray-900/90 text-white px-6 py-2.5 rounded-full text-sm font-medium shadow-2xl opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-2">
         <i class="fa-solid fa-circle-info text-sky-400"></i>
         <span id="toastMsg">通知メッセージ</span>
     </div>
 
-    <div id="articleModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-200">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200">
+    <!-- 記事モーダル -->
+    <div id="articleModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-white text-gray-800 rounded-2xl max-w-md w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200">
             <h3 id="articleTitle" class="text-xl font-bold text-gray-800 border-b pb-2 mb-3">記事タイトル</h3>
             <p id="articleContent" class="text-gray-600 text-sm leading-relaxed mb-6">記事の内容がここに入ります。</p>
             <div class="text-right">
@@ -239,13 +246,14 @@
         </div>
     </div>
 
-    <div id="languageModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-200">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200">
+    <!-- 言語グラフモーダル -->
+    <div id="languageModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-white text-gray-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200">
             <div class="flex justify-between items-center border-b pb-3 mb-4">
                 <h3 class="text-xl font-bold text-gray-800">言語の使用割合 (こうようご グラフ)</h3>
                 <button onclick="closeModal('languageModal')" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
             </div>
-            <div class="space-y-4 my-6">
+            <div class="space-y-4 my-6 text-gray-800">
                 <div>
                     <div class="flex justify-between text-sm font-bold mb-1">
                         <span>英語 (English)</span>
@@ -289,13 +297,14 @@
         </div>
     </div>
 
-    <div id="religionModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-200">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200">
+    <!-- 宗教グラフモーダル -->
+    <div id="religionModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none transition-opacity duration-200">
+        <div class="bg-white text-gray-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl transform scale-95 transition-transform duration-200">
             <div class="flex justify-between items-center border-b pb-3 mb-4">
                 <h3 class="text-xl font-bold text-gray-800">宗教の割合 (しゅうきょう グラフ)</h3>
                 <button onclick="closeModal('religionModal')" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
             </div>
-            <div class="space-y-4 my-6">
+            <div class="space-y-4 my-6 text-gray-800">
                 <div>
                     <div class="flex justify-between text-sm font-bold mb-1">
                         <span>キリスト教</span>
