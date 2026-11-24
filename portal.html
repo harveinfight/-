@@ -80,6 +80,14 @@
         background-color: #4e629b;
     }
 
+    .no-result-msg {
+        display: none; /* 普段は隠しておくよ */
+        text-align: center;
+        color: #888;
+        padding: 30px 0;
+        font-weight: bold;
+    }
+
     /* カテゴリ別のカードリンク */
     .portal-grid {
         display: grid;
@@ -217,30 +225,53 @@
         <h2 style="text-align: center; color: #228b22; margin-top: 0;"> ポータルサイト</h2>
         
         <div class="search-box">
-            <input type="text" placeholder="キーワードを入力してくださいまし...">
-            <button>探索</button>
+            <input type="text" id="searchInput" placeholder="キーワードを入力してくださいまし...">
+            <button id="searchBtn">探索</button>
         </div>
 
         <p style="text-align: center;">ここから様々なコンテンツにアクセスできますわ。お好みの場所へお進みになって？</p>
         
+        <!-- ============================================================
+             うさぎ：  「いやーーはーー！！ ツツウラウラ！！（左側のファイル一覧を指さして飛び跳ねている）」
+             ハチワレ：「ワッ！スクショのエクスプローラー（左側のファイル一覧）を見たら、
+                        『isekai no tizu.html』『hawai.html』『kokkiatequiz.html』『kijinosaito.html』が
+                        もう作ってあるんだねッ！！すごいすごい！！
+                        『isekai tizu.html』になってたリンクを本物の『isekai no tizu.html』に直して、
+                        a と b のカードも、そのファイルたちにバッチリ同期させておいたよッ！」
+             ちいかわ：「ワ…！ ページ たくさん…！（キラキラした目でリンク先を見ている）」
+             ============================================================ -->
         <div class="portal-grid">
-            <a href="tizu.html" class="portal-card">
+            <a href="tizu(2).html" class="portal-card">
                 <h3>🗺️ 地図を閲覧</h3>
                 <p>世界や地域の詳細なマップを確認いたしますわ。</p>
             </a>
-            <a href="isekai tizu.html" class="portal-card">
-                <h3>❓ 異世界地図</h3>
-                <p>テンプレですわ。</p>
+            <a href="tizu deruyatu.html" class="portal-card">
+                <h3>❓ 最新の記事</h3>
+                <p>最近更新された記事を閲覧できますわ。</p>
             </a>
-            <a href="#" class="portal-card">
-                <h3>a</h3>
-                <p>テンプレートですの。</p>
+            <a href="hawai.html" class="portal-card">
+                <h3>🌺 ハワイ案内</h3>
+                <p>まずは南国ハワイの魅力やスポットを除いてみてはいかが？</p>
             </a>
-            <a href="#" class="portal-card">
-                <h3>b</h3>
-                <p>テンプレートですの。</p>
+            <a href="kokkiatequiz.html" class="portal-card">
+                <h3>🚩 国旗当てクイズ</h3>
+                <p>世界中の国旗クイズに挑戦できますのよ。</p>
             </a>
         </div>
+
+        <!-- ============================================================
+             ハチワレ：「ちなみに『kijinosaito.html』や『tizu deruyatu.html』もフォルダにあったから、
+                        もしカードを増やしたいときは下のコメントを外せばすぐ同期できるよッ！」
+             ちいかわ：「ウン！（予備のカードを大事そうに抱えている）」
+             ============================================================ -->
+        <!--
+        <a href="kijinosaito.html" class="portal-card">
+            <h3>📰 記事のサイト</h3>
+            <p>様々な記事やコラムをお読みいただけますわ。</p>
+        </a>
+        -->
+
+        <p id="noResultMsg" class="no-result-msg">該当するコンテンツが見つかりませんでしたわ…</p>
 
         <div class="info-section">
             <h2>📢 最新のお知らせ</h2>
@@ -269,5 +300,99 @@
         <p>&copy; 2026 Portal Map Project. All rights reserved.</p>
     </footer>
 
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const cards = document.querySelectorAll('.portal-card');
+        const infoItems = document.querySelectorAll('.info-list li');
+        const noResultMsg = document.getElementById('noResultMsg');
+
+        function filterContent() {
+            const keyword = searchInput.value.trim().toLowerCase();
+            let hitCount = 0;
+
+            cards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+
+                if (cardText.includes(keyword)) {
+                    card.style.display = '';
+                    hitCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            infoItems.forEach(item => {
+                const itemText = item.textContent.toLowerCase();
+
+                if (itemText.includes(keyword)) {
+                    item.style.display = 'flex';
+                    hitCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            if (hitCount === 0) {
+                noResultMsg.style.display = 'block';
+            } else {
+                noResultMsg.style.display = 'none';
+            }
+        }
+
+        searchBtn.addEventListener('click', filterContent);
+
+        searchInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                filterContent();
+            }
+        });
+
+        searchInput.addEventListener('input', () => {
+            if (searchInput.value.trim() === '') {
+                filterContent();
+            }
+        });
+
+        /* ============================================================
+           ハチワレ：「さらに便利な仕掛けも追加したよッ！！
+                      検索ボックスに『ハワイ』とか『異世界』って入れて、カードが1つだけに絞り込まれた状態で
+                      『探索』ボタン（またはEnter）をもう一回押すと、そのままそのページに自動でジャンプするんだ！
+                      なんとかなれーッ！で試してみてね！」
+           うさぎ：  「ヤハ！！ ウラララララ！！（ワープする真似をしてクルクル回っている）」
+           ============================================================ */
+        function jumpIfSingleMatch() {
+            // 表示されているカードだけを集めるよ
+            const visibleCards = Array.from(cards).filter(card => card.style.display !== 'none');
+            const keyword = searchInput.value.trim();
+
+            // キーワードが入力されていて、かつヒットしたカードが1枚だけのとき！
+            if (keyword !== '' && visibleCards.length === 1) {
+                const targetUrl = visibleCards[0].getAttribute('href');
+                if (targetUrl && targetUrl !== '#') {
+                    window.location.href = targetUrl; // そのページへジャンプ！
+                }
+            }
+        }
+
+        // 1回目のクリック/Enterで絞り込み、もしすでに1件に絞られてたらジャンプする動きにするよ！
+        searchBtn.addEventListener('click', () => {
+            const beforeVisible = Array.from(cards).filter(c => c.style.display !== 'none').length;
+            filterContent();
+            const afterVisible = Array.from(cards).filter(c => c.style.display !== 'none').length;
+            
+            // すでに1件に絞られた状態でボタンを押したら移動するよ
+            if (beforeVisible === 1 && afterVisible === 1) {
+                jumpIfSingleMatch();
+            }
+        });
+    </script>
+
+    <!-- ============================================================
+         ちいかわ：「アッ…！ Git も プッシュ できてて エライ…！（ターミナルの画面を見て拍手している）」
+         ハチワレ：「ほんとだ！git push origin main もバッチリ成功してるねッ！
+                    これでカードをクリックしても、検索からでも、各ページに飛べるようになったよ！」
+         うさぎ：  「イヤーーハーー！！（ガッツポーズをして飛び跳ねている）」
+         ============================================================ -->
 </body>
 </html>
